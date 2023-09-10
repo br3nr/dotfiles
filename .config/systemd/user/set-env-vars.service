@@ -1,9 +1,0 @@
-[Unit]
-Description=Set env vars for Hyprland Nvidia
-
-[Service]
-Type=oneshot
-ExecStart=/bin/bash /home/max/.config/systemd/user/set-env-variables.sh
-
-[Install]
-WantedBy=default.target
