@@ -21,6 +21,7 @@ lsp.ensure_installed({
   'lua-language-server',
   'tsserver',
   'rust_analyzer',
+  'pyright'
 })
 
 local cmp = require('cmp')
