@@ -8,7 +8,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
 
-  use {	  
+  use {
 	  'nvim-telescope/telescope.nvim', tag = '0.1.2',
 	  -- or                            , branch = '0.1.x',
 	  requires = { {'nvim-lua/plenary.nvim'} }
@@ -26,11 +26,16 @@ return require('packer').startup(function(use)
 
   use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
   use('nvim-treesitter/playground')
-  
   use('nvim-lua/plenary.nvim')
   use('ThePrimeagen/harpoon')
   use('mbbill/undotree')
   use('tpope/vim-fugitive')
+
+  use {
+    'prettier/vim-prettier',
+    run = 'npm install',
+    ft = { 'typescript', 'typescriptreact' },
+  }
 
   use {
 	  'VonHeikemen/lsp-zero.nvim',
@@ -47,5 +52,8 @@ return require('packer').startup(function(use)
     {'L3MON4D3/LuaSnip'},     -- Required
   }
 }
+
+vim.g['prettier#config#use_global_config'] = 1
+vim.g['prettier#autoformat'] = 1
 
 end)
