@@ -263,7 +263,7 @@ PanelWindow {
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
                 color: Theme.textActiveColor; renderType: Text.NativeRendering
-                text: "cam"
+                text: "scr"
 
                 MouseArea {
                     anchors.fill: parent; cursorShape: Qt.PointingHandCursor
