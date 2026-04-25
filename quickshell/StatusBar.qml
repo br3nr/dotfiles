@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
+import Quickshell.Services.Pipewire
 
 PanelWindow {
     id: bar
@@ -35,7 +36,7 @@ PanelWindow {
             Layout.fillWidth: true
             Layout.preferredHeight: Theme.barHeight
             Layout.leftMargin: Theme.spacingMd
-            Layout.rightMargin: Theme.spacingMd
+            Layout.rightMargin: Theme.spacingLg
             spacing: Theme.spacingLg
 
             // Workspaces
@@ -167,23 +168,6 @@ PanelWindow {
                 Timer { interval: 4000; running: true; repeat: true; onTriggered: tempProc.running = true }
             }
 
-            // Spotify
-            Text {
-                Layout.alignment: Qt.AlignVCenter
-                font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textInactiveColor; renderType: Text.NativeRendering
-                text: spotifyProc.spotifyText
-                visible: spotifyProc.spotifyText !== ""
-
-                Process {
-                    id: spotifyProc; property string spotifyText: ""
-                    command: ["bash", "-c", "playerctl -p spotify metadata --format '{{artist}} - {{title}}' 2>/dev/null | head -c 40"]
-                    running: true
-                    stdout: StdioCollector { onStreamFinished: spotifyProc.spotifyText = this.text.trim() }
-                }
-                Timer { interval: 3000; running: true; repeat: true; onTriggered: spotifyProc.running = true }
-            }
-
             Item { Layout.fillWidth: true }
 
             // Clock
@@ -256,22 +240,41 @@ PanelWindow {
 
             // Volume
             Text {
+                id: volText
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
                 color: Theme.textInactiveColor; renderType: Text.NativeRendering
-                text: volProc.volText
+                text: Pipewire.defaultAudioSink?.audio
+                      ? Math.round(Pipewire.defaultAudioSink.audio.volume * 100) + "%"
+                      : "—"
 
-                Process {
-                    id: volProc; property string volText: "—"
-                    command: ["bash", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | awk '{printf \"%.0f%%\", $2*100}'"]
-                    running: true
-                    stdout: StdioCollector { onStreamFinished: { let t = this.text.trim(); if (t) volProc.volText = t } }
+                PwObjectTracker {
+                    objects: Pipewire.defaultAudioSink ? [Pipewire.defaultAudioSink] : []
                 }
-                Timer { interval: 2000; running: true; repeat: true; onTriggered: volProc.running = true }
+
+                MouseArea {
+                    anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                    onClicked: volumePopup.visible = !volumePopup.visible
+                }
+            }
+
+            // Screenshot
+            Text {
+                Layout.alignment: Qt.AlignVCenter
+                font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
+                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                text: "cam"
+
+                MouseArea {
+                    anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                    onClicked: screenshotProc.running = true
+                }
+                Process { id: screenshotProc; command: ["quickshell", "--path", "/home/max/.config/quickshell/hyprquickshot", "-n"] }
             }
 
             // Power
             Text {
+                id: pwrText
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
                 color: Theme.textActiveColor; renderType: Text.NativeRendering
@@ -279,9 +282,8 @@ PanelWindow {
 
                 MouseArea {
                     anchors.fill: parent; cursorShape: Qt.PointingHandCursor
-                    onClicked: powerProc.running = true
+                    onClicked: powerPopup.visible = !powerPopup.visible
                 }
-                Process { id: powerProc; command: ["wlogout"] }
             }
         }
 
@@ -295,8 +297,9 @@ PanelWindow {
             readonly property var symbols: [
                 "☉", "☽", "♄", "♃", "☿", "♀", "♂", "⚶", "☊", "☋"
             ]
+            readonly property string spacer: "      "
 
-            property string fullString: ""
+            property var symbolList: []
 
             Component.onCompleted: {
                 let arr = [...symbols]
@@ -304,16 +307,19 @@ PanelWindow {
                     let j = Math.floor(Math.random() * (i + 1));
                     [arr[i], arr[j]] = [arr[j], arr[i]]
                 }
-                let segment = ""
+                let list = []
                 for (let r = 0; r < 30; r++) {
                     let copy = [...arr]
                     for (let i = copy.length - 1; i > 0; i--) {
                         let j = Math.floor(Math.random() * (i + 1));
                         [copy[i], copy[j]] = [copy[j], copy[i]]
                     }
-                    segment += copy.join("      ") + "      "
+                    for (let s = 0; s < copy.length; s++) {
+                        list.push(copy[s])
+                    }
                 }
-                fullString = segment + segment
+                // Duplicate for seamless loop
+                symbolList = list.concat(list)
                 startTimer.start()
             }
 
@@ -321,8 +327,8 @@ PanelWindow {
                 id: startTimer
                 interval: 100
                 onTriggered: {
-                    if (scrollText.implicitWidth > 0) {
-                        let seg = scrollText.implicitWidth / 2
+                    if (scrollRow.implicitWidth > 0) {
+                        let seg = scrollRow.implicitWidth / 2
                         scrollAnim.from = 0
                         scrollAnim.to = -seg
                         scrollAnim.duration = (seg / 50) * 1000
@@ -333,19 +339,29 @@ PanelWindow {
 
             Item {
                 id: scrollContainer
-                width: scrollText.implicitWidth
+                width: scrollRow.implicitWidth
                 height: parent.height
                 x: 0
 
-                Text {
-                    id: scrollText
-                    text: symbolStrip.fullString
-                    color: Theme.symbolColor
-                    font.family: Theme.fontFamily
-                    font.pixelSize: 15
+                Row {
+                    id: scrollRow
                     height: parent.height
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
+
+                    Repeater {
+                        model: symbolStrip.symbolList
+
+                        delegate: Text {
+                            required property string modelData
+                            required property int index
+                            text: modelData + symbolStrip.spacer
+                            color: index % 2 === 0 ? Theme.symbolColor : Theme.symbolColorDim
+                            font.family: Theme.fontFamily
+                            font.pixelSize: 15
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            renderType: Text.NativeRendering
+                        }
+                    }
                 }
 
                 NumberAnimation on x {
@@ -359,6 +375,22 @@ PanelWindow {
                 }
             }
         }
+    }
+
+    VolumePopup {
+        id: volumePopup
+        barWindow: bar
+        anchor.rect.x: volText.mapToItem(null, 0, 0).x - width + volText.width
+        anchor.rect.y: bar.height
+        visible: false
+    }
+
+    PowerPopup {
+        id: powerPopup
+        barWindow: bar
+        anchor.rect.x: bar.width - bar.margins.right - powerPopup.width
+        anchor.rect.y: bar.height
+        visible: false
     }
 
     Rectangle {

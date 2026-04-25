@@ -14,7 +14,8 @@ QtObject {
     readonly property color bgElevatedAlt: secondary
     readonly property color textActiveColor: foreground
     readonly property color textInactiveColor: mutedForeground
-    readonly property color symbolColor: foreground
+    readonly property color symbolColor: "#b0b0b0"
+    readonly property color symbolColorDim: "#666666"
     readonly property color critical: "#c45050"
     readonly property color good: "#6b9b6b"
 
