@@ -8,15 +8,37 @@ import Quickshell.Io
 PopupWindow {
     id: popup
     color: "transparent"
-    width: 140
-    height: contentCol.implicitHeight + 16
+    implicitWidth: 140
+    implicitHeight: contentCol.implicitHeight + 16
 
     required property var barWindow
+    required property Item anchorItem
 
     anchor.window: barWindow
+    anchor.onAnchoring: {
+        let pos = anchorItem.mapToItem(barWindow.contentItem, 0, 0);
+        anchor.rect.x = pos.x + anchorItem.width - popup.implicitWidth;
+        anchor.rect.y = barWindow.contentItem.height + 8;
+    }
+
+    // Delay the focus grab so the popup surface is fully mapped first
+    property bool grabActive: false
+    onVisibleChanged: {
+        if (visible) {
+            grabTimer.start();
+        } else {
+            grabActive = false;
+            grabTimer.stop();
+        }
+    }
+    Timer {
+        id: grabTimer
+        interval: 50
+        onTriggered: popup.grabActive = true
+    }
 
     HyprlandFocusGrab {
-        active: popup.visible
+        active: popup.grabActive
         windows: [popup, popup.barWindow]
         onCleared: popup.visible = false
     }
@@ -26,7 +48,7 @@ PopupWindow {
         color: Theme.card
         border.color: Theme.borderColor
         border.width: 1
-        radius: 4
+        radius: 0
     }
 
     ColumnLayout {
@@ -63,8 +85,7 @@ PopupWindow {
                     text: modelData.label
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
-                    color: (modelData.label === "shutdown" || modelData.label === "reboot")
-                           ? Theme.textActiveColor : Theme.textInactiveColor
+                    color: Theme.textInactiveColor
                     renderType: Text.NativeRendering
                 }
 

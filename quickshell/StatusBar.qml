@@ -36,7 +36,7 @@ PanelWindow {
             Layout.fillWidth: true
             Layout.preferredHeight: Theme.barHeight
             Layout.leftMargin: Theme.spacingMd
-            Layout.rightMargin: Theme.spacingLg
+            Layout.rightMargin: 16
             spacing: Theme.spacingLg
 
             // Workspaces
@@ -243,10 +243,8 @@ PanelWindow {
                 id: volText
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textInactiveColor; renderType: Text.NativeRendering
-                text: Pipewire.defaultAudioSink?.audio
-                      ? Math.round(Pipewire.defaultAudioSink.audio.volume * 100) + "%"
-                      : "—"
+                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                text: "vol"
 
                 PwObjectTracker {
                     objects: Pipewire.defaultAudioSink ? [Pipewire.defaultAudioSink] : []
@@ -270,6 +268,29 @@ PanelWindow {
                     onClicked: screenshotProc.running = true
                 }
                 Process { id: screenshotProc; command: ["quickshell", "--path", "/home/max/.config/quickshell/hyprquickshot", "-n"] }
+            }
+
+            // Pomodoro timer
+            Text {
+                id: tmrText
+                Layout.alignment: Qt.AlignVCenter
+                font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
+                color: Theme.textActiveColor
+                renderType: Text.NativeRendering
+                text: pomodoroPopup.barLabel
+
+                MouseArea {
+                    anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                    onClicked: pomodoroPopup.visible = !pomodoroPopup.visible
+                }
+            }
+
+            // Separator
+            Rectangle {
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredWidth: 1
+                Layout.preferredHeight: 12
+                color: Theme.borderColor
             }
 
             // Power
@@ -380,16 +401,21 @@ PanelWindow {
     VolumePopup {
         id: volumePopup
         barWindow: bar
-        anchor.rect.x: volText.mapToItem(null, 0, 0).x - width + volText.width
-        anchor.rect.y: bar.height
+        anchorItem: volText
+        visible: false
+    }
+
+    PomodoroPopup {
+        id: pomodoroPopup
+        barWindow: bar
+        anchorItem: tmrText
         visible: false
     }
 
     PowerPopup {
         id: powerPopup
         barWindow: bar
-        anchor.rect.x: bar.width - bar.margins.right - powerPopup.width
-        anchor.rect.y: bar.height
+        anchorItem: pwrText
         visible: false
     }
 
