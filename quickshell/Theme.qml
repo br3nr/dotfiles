@@ -1,36 +1,39 @@
-// Theme — maxweb palette (oklch-derived)
 pragma Singleton
 import QtQuick
+import "themes" as ThemeSet
 
 QtObject {
-    readonly property color background: "#0a0a0a"
-    readonly property color card: "#171717"
-    readonly property color secondary: "#262626"
-    readonly property color mutedForeground: "#a1a1a1"
-    readonly property color foreground: "#fafafa"
-    readonly property color borderColor: Qt.rgba(1, 1, 1, 0.1)
+    property string variant: "light"
+    readonly property QtObject _active: variant === "light" ? ThemeSet.LightTheme : ThemeSet.DarkTheme
 
-    readonly property color bgColor: card
-    readonly property color bgElevatedAlt: secondary
-    readonly property color textActiveColor: foreground
-    readonly property color textInactiveColor: mutedForeground
-    readonly property color symbolColor: "#b0b0b0"
-    readonly property color symbolColorDim: "#666666"
-    readonly property color critical: "#c45050"
-    readonly property color good: "#6b9b6b"
+    readonly property color background: _active.background
+    readonly property color card: _active.card
+    readonly property color secondary: _active.secondary
+    readonly property color mutedForeground: _active.mutedForeground
+    readonly property color foreground: _active.foreground
+    readonly property color borderColor: _active.borderColor
 
-    readonly property int spacingXs: 2
-    readonly property int spacingSm: 4
-    readonly property int spacingMd: 8
-    readonly property int spacingLg: 12
+    readonly property color bgColor: _active.bgColor
+    readonly property color bgElevatedAlt: _active.bgElevatedAlt
+    readonly property color textActiveColor: _active.textActiveColor
+    readonly property color textInactiveColor: _active.textInactiveColor
+    readonly property color symbolColor: _active.symbolColor
+    readonly property color symbolColorDim: _active.symbolColorDim
+    readonly property color critical: _active.critical
+    readonly property color good: _active.good
 
-    readonly property int itemRadius: 2
-    readonly property string fontFamily: "PP Fraktion Mono"
-    readonly property int fontSizeSmall: 10
-    readonly property int fontSizeNormal: 12
+    readonly property int spacingXs: _active.spacingXs
+    readonly property int spacingSm: _active.spacingSm
+    readonly property int spacingMd: _active.spacingMd
+    readonly property int spacingLg: _active.spacingLg
 
-    readonly property int animationDuration: 200
+    readonly property int itemRadius: _active.itemRadius
+    readonly property string fontFamily: _active.fontFamily
+    readonly property int fontSizeSmall: _active.fontSizeSmall
+    readonly property int fontSizeNormal: _active.fontSizeNormal
 
-    readonly property int barHeight: 32
-    readonly property int symbolBarHeight: 24
+    readonly property int animationDuration: _active.animationDuration
+
+    readonly property int barHeight: _active.barHeight
+    readonly property int symbolBarHeight: _active.symbolBarHeight
 }
