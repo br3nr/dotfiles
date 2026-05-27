@@ -1,5 +1,5 @@
 return {
-  name = "catppuccin",
-  flavour = "latte",
+  name = "rose-pine",
+  flavour = "dawn",
   background = "light",
 }

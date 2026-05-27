@@ -38,17 +38,17 @@ NEXT_MODE="$(resolve_mode)"
 printf '%s\n' "$NEXT_MODE" > "$STATE_FILE"
 
 if [ "$NEXT_MODE" = "light" ]; then
-    ln -sfn "$HOME/.config/foot/themes/catppuccin-latte.ini" "$HOME/.config/foot/theme.ini"
+    ln -sfn "$HOME/.config/foot/themes/rose-pine-dawn.ini" "$HOME/.config/foot/theme.ini"
     cat > "$HOME/.config/nvim/lua/theme/current.lua" <<'EOF'
 return {
-  name = "catppuccin",
-  flavour = "latte",
+  name = "rose-pine",
+  flavour = "dawn",
   background = "light",
 }
 EOF
     sed -i 's/property string variant: "dark"/property string variant: "light"/' "$HOME/.config/quickshell/Theme.qml"
     pkill swaybg || true
-    swaybg -o '*' -i "$HOME/.config/wallpapers/crosses-light.png" -m fill >/dev/null 2>&1 &
+    swaybg -o '*' -i "$HOME/Downloads/light_wallpaper.png" -m fill >/dev/null 2>&1 &
 else
     ln -sfn "$HOME/.config/foot/themes/catppuccin-mocha.ini" "$HOME/.config/foot/theme.ini"
     cat > "$HOME/.config/nvim/lua/theme/current.lua" <<'EOF'

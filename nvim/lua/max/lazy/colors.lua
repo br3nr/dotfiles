@@ -11,6 +11,15 @@ function ColorNeovim(color)
     vim.g.catppuccin_flavour = theme.flavour
   end
 
+  if color == "rose-pine" and ok_theme and theme.flavour and theme.flavour ~= "" then
+    local ok_rose, rose = pcall(require, "rose-pine")
+    if ok_rose then
+      rose.setup({
+        variant = theme.flavour,
+      })
+    end
+  end
+
   local ok = pcall(vim.cmd.colorscheme, color)
   if not ok then
     vim.defer_fn(function()
@@ -26,6 +35,12 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
+    lazy = false,
+    priority = 1100,
+  },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
     lazy = false,
     priority = 1100,
   },
