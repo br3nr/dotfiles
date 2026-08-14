@@ -173,6 +173,25 @@ apply_theme() {
         (.effects.terminalOpacity | type == "number") and
         (.effects.terminalOpacity >= 0 and .effects.terminalOpacity <= 1) and
         (.quickshell | type == "object") and
+        (.quickshell as $q |
+            [
+                "surfaceBase", "surfaceRaised", "surfaceOverlay",
+                "textPrimary", "textSecondary", "textMuted", "textDisabled",
+                "accent", "onAccent",
+                "stateHover", "statePressed", "stateSelected",
+                "borderSubtle", "borderStrong",
+                "success", "warning", "error", "info",
+                "decorative", "decorativeMuted"
+            ] as $colors |
+            all($colors[]; $q[.] | type == "string" and test("^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$")) and
+            ($q.fontFamily | type == "string") and
+            all([
+                $q.fontSizeSmall, $q.fontSizeNormal,
+                $q.spacingXs, $q.spacingSm, $q.spacingMd, $q.spacingLg,
+                $q.itemRadius, $q.animationDuration,
+                $q.barHeight, $q.symbolBarHeight
+            ][]; type == "number")
+        ) and
         (.components | type == "object")
     ' "$manifest" >/dev/null || die "invalid manifest: $manifest"
 
@@ -237,6 +256,28 @@ list_themes() {
     done
 }
 
+list_themes_json() {
+    local manifests=()
+    local manifest
+
+    for manifest in "$THEMES_DIR"/*/theme.json; do
+        [ -f "$manifest" ] && manifests+=("$manifest")
+    done
+
+    if [ "${#manifests[@]}" -eq 0 ]; then
+        printf '[]\n'
+        return
+    fi
+
+    jq -s '[.[] | {
+        id,
+        name,
+        appearance,
+        wallpaper,
+        quickshell
+    }]' "${manifests[@]}"
+}
+
 COMMAND="${1:-toggle}"
 case "$COMMAND" in
     apply)
@@ -251,6 +292,9 @@ case "$COMMAND" in
         ;;
     list)
         list_themes
+        ;;
+    list-json)
+        list_themes_json
         ;;
     current)
         current_theme

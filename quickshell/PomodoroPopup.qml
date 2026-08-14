@@ -90,8 +90,8 @@ PopupWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.card
-        border.color: Theme.borderColor
+        color: Theme.surfaceRaised
+        border.color: Theme.borderSubtle
         border.width: 1
         radius: 0
     }
@@ -137,7 +137,7 @@ PopupWindow {
                     // Background track
                     ctx.beginPath();
                     ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
-                    ctx.strokeStyle = Theme.secondary;
+                    ctx.strokeStyle = Theme.surfaceOverlay;
                     ctx.lineWidth = lineWidth;
                     ctx.lineCap = "round";
                     ctx.stroke();
@@ -149,7 +149,7 @@ PopupWindow {
                         ctx.beginPath();
                         ctx.arc(cx, cy, radius, startAngle, endAngle);
                         ctx.strokeStyle = popup.timerState === PomodoroPopup.TimerState.Paused
-                                          ? Theme.mutedForeground : Theme.textActiveColor;
+                                          ? Theme.textMuted : Theme.accent;
                         ctx.lineWidth = lineWidth;
                         ctx.lineCap = "round";
                         ctx.stroke();
@@ -163,7 +163,7 @@ PopupWindow {
                 font.family: Theme.fontFamily
                 font.pixelSize: 18
                 font.weight: Font.DemiBold
-                color: Theme.textActiveColor
+                color: Theme.textPrimary
                 renderType: Text.NativeRendering
                 text: {
                     if (popup.timerState === PomodoroPopup.TimerState.Idle) {
@@ -193,7 +193,7 @@ PopupWindow {
                     text: "min"
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.textInactiveColor
+                    color: Theme.textMuted
                     renderType: Text.NativeRendering
                     Layout.preferredWidth: 30
                 }
@@ -205,13 +205,13 @@ PopupWindow {
                     Layout.preferredWidth: 24
                     Layout.preferredHeight: 20
                     radius: Theme.itemRadius
-                    color: minMinusHover.containsMouse ? Theme.secondary : "transparent"
+                    color: minMinusHover.containsMouse ? Theme.stateHover : "transparent"
                     Text {
                         anchors.centerIn: parent
                         text: "-"
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.textActiveColor
+                        color: Theme.textPrimary
                         renderType: Text.NativeRendering
                     }
                     MouseArea {
@@ -228,7 +228,7 @@ PopupWindow {
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
                     font.weight: Font.DemiBold
-                    color: Theme.textActiveColor
+                    color: Theme.textPrimary
                     renderType: Text.NativeRendering
                     horizontalAlignment: Text.AlignHCenter
                     Layout.preferredWidth: 24
@@ -239,13 +239,13 @@ PopupWindow {
                     Layout.preferredWidth: 24
                     Layout.preferredHeight: 20
                     radius: Theme.itemRadius
-                    color: minPlusHover.containsMouse ? Theme.secondary : "transparent"
+                    color: minPlusHover.containsMouse ? Theme.stateHover : "transparent"
                     Text {
                         anchors.centerIn: parent
                         text: "+"
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.textActiveColor
+                        color: Theme.textPrimary
                         renderType: Text.NativeRendering
                     }
                     MouseArea {
@@ -267,7 +267,7 @@ PopupWindow {
                     text: "sec"
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.textInactiveColor
+                    color: Theme.textMuted
                     renderType: Text.NativeRendering
                     Layout.preferredWidth: 30
                 }
@@ -278,13 +278,13 @@ PopupWindow {
                     Layout.preferredWidth: 24
                     Layout.preferredHeight: 20
                     radius: Theme.itemRadius
-                    color: secMinusHover.containsMouse ? Theme.secondary : "transparent"
+                    color: secMinusHover.containsMouse ? Theme.stateHover : "transparent"
                     Text {
                         anchors.centerIn: parent
                         text: "-"
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.textActiveColor
+                        color: Theme.textPrimary
                         renderType: Text.NativeRendering
                     }
                     MouseArea {
@@ -301,7 +301,7 @@ PopupWindow {
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
                     font.weight: Font.DemiBold
-                    color: Theme.textActiveColor
+                    color: Theme.textPrimary
                     renderType: Text.NativeRendering
                     horizontalAlignment: Text.AlignHCenter
                     Layout.preferredWidth: 24
@@ -311,13 +311,13 @@ PopupWindow {
                     Layout.preferredWidth: 24
                     Layout.preferredHeight: 20
                     radius: Theme.itemRadius
-                    color: secPlusHover.containsMouse ? Theme.secondary : "transparent"
+                    color: secPlusHover.containsMouse ? Theme.stateHover : "transparent"
                     Text {
                         anchors.centerIn: parent
                         text: "+"
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.textActiveColor
+                        color: Theme.textPrimary
                         renderType: Text.NativeRendering
                     }
                     MouseArea {
@@ -335,7 +335,7 @@ PopupWindow {
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 1
-            color: Theme.borderColor
+            color: Theme.borderSubtle
         }
 
         // Controls
@@ -348,7 +348,7 @@ PopupWindow {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 24
                 radius: Theme.itemRadius
-                color: startHover.containsMouse ? Theme.secondary : "transparent"
+                color: startHover.containsMouse ? Theme.stateHover : "transparent"
 
                 Text {
                     anchors.centerIn: parent
@@ -360,7 +360,7 @@ PopupWindow {
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
                     font.weight: Font.DemiBold
-                    color: Theme.textActiveColor
+                    color: Theme.textPrimary
                     renderType: Text.NativeRendering
                 }
 
@@ -391,14 +391,14 @@ PopupWindow {
                 Layout.preferredHeight: 24
                 radius: Theme.itemRadius
                 visible: popup.timerState !== PomodoroPopup.TimerState.Idle
-                color: resetHover.containsMouse ? Theme.secondary : "transparent"
+                color: resetHover.containsMouse ? Theme.stateHover : "transparent"
 
                 Text {
                     anchors.centerIn: parent
                     text: "reset"
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.textInactiveColor
+                    color: Theme.textMuted
                     renderType: Text.NativeRendering
                 }
 
@@ -429,14 +429,14 @@ PopupWindow {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 20
                     radius: Theme.itemRadius
-                    color: presetHover.containsMouse ? Theme.secondary : "transparent"
+                    color: presetHover.containsMouse ? Theme.stateHover : "transparent"
 
                     Text {
                         anchors.centerIn: parent
                         text: modelData + "m"
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.textInactiveColor
+                        color: Theme.textMuted
                         renderType: Text.NativeRendering
                     }
 

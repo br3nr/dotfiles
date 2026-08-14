@@ -3,3 +3,4 @@ StatusBar 1.0 StatusBar.qml
 VolumePopup 1.0 VolumePopup.qml
 PowerPopup 1.0 PowerPopup.qml
 PomodoroPopup 1.0 PomodoroPopup.qml
+ThemeExplorer 1.0 ThemeExplorer.qml

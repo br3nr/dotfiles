@@ -24,7 +24,7 @@ PanelWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.bgColor
+        color: Theme.surfaceRaised
     }
 
     ColumnLayout {
@@ -100,7 +100,7 @@ PanelWindow {
                             onPaint: {
                                 let ctx = getContext("2d")
                                 ctx.clearRect(0, 0, width, height)
-                                ctx.fillStyle = Theme.bgElevatedAlt
+                                ctx.fillStyle = Theme.stateSelected
                                 for (let i = 0; i < pixelCount && i < positions.length; i++) {
                                     let idx = positions[i]
                                     let gx = idx % gridW
@@ -138,7 +138,7 @@ PanelWindow {
                             font.family: Theme.fontFamily
                             font.pixelSize: Theme.fontSizeSmall
                             color: (isActive || isHovered)
-                                   ? Theme.textActiveColor : Theme.textInactiveColor
+                                   ? Theme.textPrimary : Theme.textMuted
                             renderType: Text.NativeRendering
                         }
 
@@ -163,7 +163,7 @@ PanelWindow {
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textInactiveColor; renderType: Text.NativeRendering
+                color: Theme.textMuted; renderType: Text.NativeRendering
                 text: tempProc.temp
 
                 Process {
@@ -182,7 +182,7 @@ PanelWindow {
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
                 font.weight: Font.DemiBold
-                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                color: Theme.textPrimary; renderType: Text.NativeRendering
                 text: clockProc.timeText
 
                 Process {
@@ -198,7 +198,7 @@ PanelWindow {
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textInactiveColor; renderType: Text.NativeRendering
+                color: Theme.textMuted; renderType: Text.NativeRendering
                 text: weatherProc.weatherText
                 visible: weatherProc.weatherText !== ""
 
@@ -217,7 +217,7 @@ PanelWindow {
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textInactiveColor; renderType: Text.NativeRendering
+                color: Theme.textMuted; renderType: Text.NativeRendering
                 text: memProc.memText
 
                 Process {
@@ -233,7 +233,7 @@ PanelWindow {
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textInactiveColor; renderType: Text.NativeRendering
+                color: Theme.textMuted; renderType: Text.NativeRendering
                 text: battProc.battText
 
                 Process {
@@ -250,7 +250,7 @@ PanelWindow {
                 id: volText
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                color: Theme.textPrimary; renderType: Text.NativeRendering
                 text: "vol"
 
                 PwObjectTracker {
@@ -267,7 +267,7 @@ PanelWindow {
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                color: Theme.textPrimary; renderType: Text.NativeRendering
                 text: "scr"
 
                 MouseArea {
@@ -282,7 +282,7 @@ PanelWindow {
                 id: tmrText
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textActiveColor
+                color: Theme.textPrimary
                 renderType: Text.NativeRendering
                 text: pomodoroPopup.barLabel
 
@@ -294,14 +294,22 @@ PanelWindow {
 
             // Theme toggle
             Text {
+                id: themeText
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                color: Theme.textPrimary; renderType: Text.NativeRendering
                 text: "thm"
 
                 MouseArea {
-                    anchors.fill: parent; cursorShape: Qt.PointingHandCursor
-                    onClicked: themeProc.running = true
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: mouse => {
+                        if (mouse.button === Qt.RightButton)
+                            themeProc.running = true
+                        else
+                            themeExplorer.visible = !themeExplorer.visible
+                    }
                 }
                 Process { id: themeProc; command: ["/home/max/.config/theme/switch-theme.sh", "toggle"] }
             }
@@ -311,7 +319,7 @@ PanelWindow {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredWidth: 1
                 Layout.preferredHeight: 12
-                color: Theme.borderColor
+                color: Theme.borderSubtle
             }
 
             // Power
@@ -319,7 +327,7 @@ PanelWindow {
                 id: pwrText
                 Layout.alignment: Qt.AlignVCenter
                 font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                color: Theme.textPrimary; renderType: Text.NativeRendering
                 text: "pwr"
 
                 MouseArea {
@@ -396,7 +404,7 @@ PanelWindow {
                             required property string modelData
                             required property int index
                             text: modelData + symbolStrip.spacer
-                            color: index % 2 === 0 ? Theme.symbolColor : Theme.symbolColorDim
+                            color: index % 2 === 0 ? Theme.decorative : Theme.decorativeMuted
                             font.family: Theme.fontFamily
                             font.pixelSize: 15
                             height: parent.height
@@ -433,6 +441,14 @@ PanelWindow {
         visible: false
     }
 
+    // Manifest-driven theme picker (right-clicking `thm` still toggles directly).
+    ThemeExplorer {
+        id: themeExplorer
+        barWindow: bar
+        anchorItem: themeText
+        visible: false
+    }
+
     PowerPopup {
         id: powerPopup
         barWindow: bar
@@ -443,7 +459,7 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         color: "transparent"
-        border.color: Theme.borderColor
+        border.color: Theme.borderSubtle
         border.width: 1
         z: 2
     }

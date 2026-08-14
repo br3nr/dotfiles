@@ -45,8 +45,8 @@ PopupWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.card
-        border.color: Theme.borderColor
+        color: Theme.surfaceRaised
+        border.color: Theme.borderSubtle
         border.width: 1
         radius: 0
     }
@@ -74,7 +74,7 @@ PopupWindow {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 24
                 radius: Theme.itemRadius
-                color: hoverArea.containsMouse ? Theme.secondary : "transparent"
+                color: hoverArea.containsMouse ? Theme.stateHover : "transparent"
 
                 Text {
                     anchors {
@@ -85,7 +85,7 @@ PopupWindow {
                     text: modelData.label
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.textInactiveColor
+                    color: Theme.textMuted
                     renderType: Text.NativeRendering
                 }
 

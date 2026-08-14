@@ -93,8 +93,8 @@ PopupWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.card
-        border.color: Theme.borderColor
+        color: Theme.surfaceRaised
+        border.color: Theme.borderSubtle
         border.width: 1
         radius: 0
     }
@@ -123,7 +123,7 @@ PopupWindow {
                     Layout.preferredWidth: 40
                     Layout.preferredHeight: 40
                     radius: Theme.itemRadius
-                    color: Theme.secondary
+                    color: Theme.surfaceOverlay
                     clip: true
                     visible: popup.cachedArtUrl !== ""
 
@@ -147,7 +147,7 @@ PopupWindow {
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
                         font.weight: Font.DemiBold
-                        color: Theme.textActiveColor
+                        color: Theme.textPrimary
                         renderType: Text.NativeRendering
                         elide: Text.ElideRight
                     }
@@ -157,7 +157,7 @@ PopupWindow {
                         text: popup.activePlayer?.trackArtist ?? ""
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.textInactiveColor
+                        color: Theme.textMuted
                         renderType: Text.NativeRendering
                         elide: Text.ElideRight
                         visible: text !== ""
@@ -177,7 +177,7 @@ PopupWindow {
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
                     color: (popup.activePlayer?.canGoPrevious ?? false)
-                           ? Theme.textInactiveColor : Theme.borderColor
+                           ? Theme.textMuted : Theme.textDisabled
                     renderType: Text.NativeRendering
                     MouseArea {
                         anchors.fill: parent; cursorShape: Qt.PointingHandCursor
@@ -190,7 +190,7 @@ PopupWindow {
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
                     font.weight: Font.DemiBold
-                    color: Theme.textActiveColor
+                    color: Theme.textPrimary
                     renderType: Text.NativeRendering
                     MouseArea {
                         anchors.fill: parent; cursorShape: Qt.PointingHandCursor
@@ -203,7 +203,7 @@ PopupWindow {
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeSmall
                     color: (popup.activePlayer?.canGoNext ?? false)
-                           ? Theme.textInactiveColor : Theme.borderColor
+                           ? Theme.textMuted : Theme.textDisabled
                     renderType: Text.NativeRendering
                     MouseArea {
                         anchors.fill: parent; cursorShape: Qt.PointingHandCursor
@@ -218,7 +218,7 @@ PopupWindow {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 1
-                color: Theme.borderColor
+                color: Theme.borderSubtle
             }
         }
 
@@ -229,7 +229,7 @@ PopupWindow {
                 text: "vol"
                 font.family: Theme.fontFamily
                 font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textActiveColor
+                color: Theme.textPrimary
                 renderType: Text.NativeRendering
             }
             Item { Layout.fillWidth: true }
@@ -239,7 +239,7 @@ PopupWindow {
                       : "—"
                 font.family: Theme.fontFamily
                 font.pixelSize: Theme.fontSizeSmall
-                color: Theme.textInactiveColor
+                color: Theme.textMuted
                 renderType: Text.NativeRendering
             }
         }
@@ -253,7 +253,7 @@ PopupWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width
                 height: 2
-                color: Theme.secondary
+                color: Theme.surfaceOverlay
                 radius: 1
             }
 
@@ -263,7 +263,7 @@ PopupWindow {
                        ? parent.width * Math.min(Pipewire.defaultAudioSink.audio.volume, 1.0)
                        : 0
                 height: 2
-                color: Theme.textActiveColor
+                color: Theme.accent
                 radius: 1
             }
 
@@ -276,7 +276,7 @@ PopupWindow {
                 width: 8
                 height: 8
                 radius: 4
-                color: Theme.textActiveColor
+                color: Theme.accent
             }
 
             MouseArea {
@@ -298,7 +298,7 @@ PopupWindow {
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 1
-            color: Theme.borderColor
+            color: Theme.borderSubtle
         }
 
         // Output label
@@ -306,7 +306,7 @@ PopupWindow {
             text: "output"
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSizeSmall
-            color: Theme.textInactiveColor
+            color: Theme.textMuted
             renderType: Text.NativeRendering
         }
 
@@ -332,8 +332,8 @@ PopupWindow {
                     Layout.preferredHeight: 22
                     radius: Theme.itemRadius
                     color: deviceHover.containsMouse && modelData !== Pipewire.defaultAudioSink
-                           ? Theme.secondary : (modelData === Pipewire.defaultAudioSink
-                           ? Theme.secondary : "transparent")
+                           ? Theme.stateHover : (modelData === Pipewire.defaultAudioSink
+                           ? Theme.stateSelected : "transparent")
 
                     Text {
                         anchors {
@@ -347,7 +347,7 @@ PopupWindow {
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.fontSizeSmall
                         color: modelData === Pipewire.defaultAudioSink
-                               ? Theme.textActiveColor : Theme.textInactiveColor
+                               ? Theme.textPrimary : Theme.textMuted
                         renderType: Text.NativeRendering
                         elide: Text.ElideRight
                     }

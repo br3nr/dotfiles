@@ -31,6 +31,22 @@ parts:
 
 Then run `switch-theme.sh apply THEME_ID`. No manager code needs to change.
 
+### Quickshell palette roles
+
+Palette names describe where a colour is used rather than what it looks like:
+
+- `surfaceBase`, `surfaceRaised`, `surfaceOverlay`: window depth and nesting.
+- `textPrimary`, `textSecondary`, `textMuted`, `textDisabled`: content hierarchy.
+- `accent`, `onAccent`: the primary interactive emphasis and text placed on it.
+- `stateHover`, `statePressed`, `stateSelected`: distinct interaction states.
+- `borderSubtle`, `borderStrong`: ordinary structure and focused selection.
+- `success`, `warning`, `error`, `info`: semantic feedback.
+- `decorative`, `decorativeMuted`: non-informational artwork such as the symbol strip.
+
+The theme manager validates every role before applying a bundle. Components
+should consume the role matching their purpose instead of choosing a visually
+similar token.
+
 Quickshell watches the generated active manifest with an event-driven
 `FileView`; it does not poll. Running Neovim instances started by this config
 receive a direct reload command. Hyprland, Foot, the desktop appearance hint,

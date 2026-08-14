@@ -11,16 +11,26 @@ QtObject {
         name: "Fallback",
         appearance: "dark",
         quickshell: {
-            background: "#0a0a0a",
-            card: "#171717",
-            secondary: "#262626",
-            mutedForeground: "#a1a1a1",
-            foreground: "#fafafa",
-            borderColor: "#1affffff",
-            symbolColor: "#b0b0b0",
-            symbolColorDim: "#666666",
-            critical: "#c45050",
-            good: "#6b9b6b",
+            surfaceBase: "#0a0a0a",
+            surfaceRaised: "#171717",
+            surfaceOverlay: "#202020",
+            textPrimary: "#fafafa",
+            textSecondary: "#c8c8c8",
+            textMuted: "#8c8c8c",
+            textDisabled: "#555555",
+            accent: "#d8d8d8",
+            onAccent: "#0a0a0a",
+            stateHover: "#262626",
+            statePressed: "#303030",
+            stateSelected: "#383838",
+            borderSubtle: "#1affffff",
+            borderStrong: "#66ffffff",
+            success: "#6b9b6b",
+            warning: "#c49b54",
+            error: "#c45050",
+            info: "#668eaa",
+            decorative: "#b0b0b0",
+            decorativeMuted: "#666666",
             fontFamily: "PP Fraktion Mono",
             fontSizeSmall: 10,
             fontSizeNormal: 12,
@@ -37,6 +47,7 @@ QtObject {
 
     property var activeTheme: fallbackTheme
     property int revision: 0
+    // The active manifest and fallback implement the same semantic palette contract.
     readonly property var palette: activeTheme.quickshell
     readonly property string themeId: activeTheme.id
     readonly property string themeName: activeTheme.name
@@ -62,21 +73,26 @@ QtObject {
         onLoaded: root.loadTheme()
     }
 
-    readonly property color background: palette.background
-    readonly property color card: palette.card
-    readonly property color secondary: palette.secondary
-    readonly property color mutedForeground: palette.mutedForeground
-    readonly property color foreground: palette.foreground
-    readonly property color borderColor: palette.borderColor
-
-    readonly property color bgColor: card
-    readonly property color bgElevatedAlt: secondary
-    readonly property color textActiveColor: foreground
-    readonly property color textInactiveColor: mutedForeground
-    readonly property color symbolColor: palette.symbolColor
-    readonly property color symbolColorDim: palette.symbolColorDim
-    readonly property color critical: palette.critical
-    readonly property color good: palette.good
+    readonly property color surfaceBase: palette.surfaceBase
+    readonly property color surfaceRaised: palette.surfaceRaised
+    readonly property color surfaceOverlay: palette.surfaceOverlay
+    readonly property color textPrimary: palette.textPrimary
+    readonly property color textSecondary: palette.textSecondary
+    readonly property color textMuted: palette.textMuted
+    readonly property color textDisabled: palette.textDisabled
+    readonly property color accent: palette.accent
+    readonly property color onAccent: palette.onAccent
+    readonly property color stateHover: palette.stateHover
+    readonly property color statePressed: palette.statePressed
+    readonly property color stateSelected: palette.stateSelected
+    readonly property color borderSubtle: palette.borderSubtle
+    readonly property color borderStrong: palette.borderStrong
+    readonly property color success: palette.success
+    readonly property color warning: palette.warning
+    readonly property color error: palette.error
+    readonly property color info: palette.info
+    readonly property color decorative: palette.decorative
+    readonly property color decorativeMuted: palette.decorativeMuted
 
     readonly property int spacingXs: palette.spacingXs
     readonly property int spacingSm: palette.spacingSm
