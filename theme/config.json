@@ -1,0 +1,8 @@
+{
+  "schedule": {
+    "dayStarts": 7,
+    "nightStarts": 18,
+    "dayTheme": "daylight",
+    "nightTheme": "nocturne"
+  }
+}

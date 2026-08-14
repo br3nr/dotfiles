@@ -1,17 +1,25 @@
-local ok_theme, theme = pcall(require, "theme.current")
+local function load_theme()
+  local path = vim.fn.stdpath("config") .. "/lua/theme/current.lua"
+  local ok, theme = pcall(dofile, path)
+  if ok and type(theme) == "table" then
+    return theme
+  end
+  return { name = "cyberdream", flavour = "", background = "dark" }
+end
 
 function ColorNeovim(color)
-  color = color or (ok_theme and theme.name or "cyberdream")
+  local theme = load_theme()
+  color = color or theme.name
 
-  if ok_theme and theme.background and theme.background ~= "" then
+  if theme.background and theme.background ~= "" then
     vim.o.background = theme.background
   end
 
-  if color == "catppuccin" and ok_theme and theme.flavour and theme.flavour ~= "" then
+  if color == "catppuccin" and theme.flavour and theme.flavour ~= "" then
     vim.g.catppuccin_flavour = theme.flavour
   end
 
-  if color == "rose-pine" and ok_theme and theme.flavour and theme.flavour ~= "" then
+  if color == "rose-pine" and theme.flavour and theme.flavour ~= "" then
     local ok_rose, rose = pcall(require, "rose-pine")
     if ok_rose then
       rose.setup({
@@ -29,6 +37,15 @@ function ColorNeovim(color)
 
   vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+end
+
+function ReloadTheme()
+  ColorNeovim()
+end
+
+local runtime_dir = vim.env.XDG_RUNTIME_DIR
+if runtime_dir and vim.v.servername == "" then
+  pcall(vim.fn.serverstart, runtime_dir .. "/nvim-theme-" .. vim.fn.getpid() .. ".sock")
 end
 
 return {

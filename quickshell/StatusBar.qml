@@ -108,6 +108,13 @@ PanelWindow {
                                     ctx.fillRect(gx * pixelSize, gy * pixelSize, pixelSize, pixelSize)
                                 }
                             }
+
+                            Connections {
+                                target: Theme
+                                function onRevisionChanged() {
+                                    pixelCanvas.requestPaint()
+                                }
+                            }
                         }
 
                         Timer {
@@ -283,6 +290,20 @@ PanelWindow {
                     anchors.fill: parent; cursorShape: Qt.PointingHandCursor
                     onClicked: pomodoroPopup.visible = !pomodoroPopup.visible
                 }
+            }
+
+            // Theme toggle
+            Text {
+                Layout.alignment: Qt.AlignVCenter
+                font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
+                color: Theme.textActiveColor; renderType: Text.NativeRendering
+                text: "thm"
+
+                MouseArea {
+                    anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                    onClicked: themeProc.running = true
+                }
+                Process { id: themeProc; command: ["/home/max/.config/theme/switch-theme.sh", "toggle"] }
             }
 
             // Separator

@@ -119,6 +119,13 @@ PopupWindow {
 
                 onProgChanged: requestPaint()
 
+                Connections {
+                    target: Theme
+                    function onRevisionChanged() {
+                        ringCanvas.requestPaint()
+                    }
+                }
+
                 onPaint: {
                     let ctx = getContext("2d");
                     ctx.reset();

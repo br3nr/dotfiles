@@ -1,0 +1,37 @@
+{
+  "id": "nocturne",
+  "name": "Nocturne",
+  "appearance": "dark",
+  "wallpaper": "$HOME/.config/wallpapers/dark_wallpaper_1.png",
+  "effects": {
+    "terminalOpacity": 0.5
+  },
+  "components": {
+    "foot": "foot.ini",
+    "hyprland": "hyprland.conf",
+    "neovim": "nvim.lua"
+  },
+  "quickshell": {
+    "background": "#0a0a0a",
+    "card": "#171717",
+    "secondary": "#262626",
+    "mutedForeground": "#a1a1a1",
+    "foreground": "#fafafa",
+    "borderColor": "#1affffff",
+    "symbolColor": "#b0b0b0",
+    "symbolColorDim": "#666666",
+    "critical": "#c45050",
+    "good": "#6b9b6b",
+    "fontFamily": "PP Fraktion Mono",
+    "fontSizeSmall": 10,
+    "fontSizeNormal": 12,
+    "spacingXs": 2,
+    "spacingSm": 4,
+    "spacingMd": 8,
+    "spacingLg": 12,
+    "itemRadius": 2,
+    "animationDuration": 200,
+    "barHeight": 32,
+    "symbolBarHeight": 24
+  }
+}
