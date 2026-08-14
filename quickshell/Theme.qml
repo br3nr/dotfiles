@@ -3,7 +3,7 @@ import QtQuick
 import "themes" as ThemeSet
 
 QtObject {
-    property string variant: "light"
+    property string variant: "dark"
     readonly property QtObject _active: variant === "light" ? ThemeSet.LightTheme : ThemeSet.DarkTheme
 
     readonly property color background: _active.background

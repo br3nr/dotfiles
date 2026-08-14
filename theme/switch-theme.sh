@@ -38,7 +38,9 @@ NEXT_MODE="$(resolve_mode)"
 printf '%s\n' "$NEXT_MODE" > "$STATE_FILE"
 
 if [ "$NEXT_MODE" = "light" ]; then
-    ln -sfn "$HOME/.config/foot/themes/rose-pine-dawn.ini" "$HOME/.config/foot/theme.ini"
+    sed -i 's/^initial-color-theme=.*/initial-color-theme=light/' "$HOME/.config/foot/foot.ini"
+    pkill -USR2 -x foot || true
+    pkill -USR2 -x footclient || true
     cat > "$HOME/.config/nvim/lua/theme/current.lua" <<'EOF'
 return {
   name = "rose-pine",
@@ -48,9 +50,11 @@ return {
 EOF
     sed -i 's/property string variant: "dark"/property string variant: "light"/' "$HOME/.config/quickshell/Theme.qml"
     pkill swaybg || true
-    swaybg -o '*' -i "$HOME/Downloads/light_wallpaper.png" -m fill >/dev/null 2>&1 &
+    swaybg -o '*' -i "$HOME/.config/wallpapers/light_wallpaper.png" -m fill >/dev/null 2>&1 &
 else
-    ln -sfn "$HOME/.config/foot/themes/catppuccin-mocha.ini" "$HOME/.config/foot/theme.ini"
+    sed -i 's/^initial-color-theme=.*/initial-color-theme=dark/' "$HOME/.config/foot/foot.ini"
+    pkill -USR1 -x foot || true
+    pkill -USR1 -x footclient || true
     cat > "$HOME/.config/nvim/lua/theme/current.lua" <<'EOF'
 return {
   name = "cyberdream",
@@ -60,7 +64,7 @@ return {
 EOF
     sed -i 's/property string variant: "light"/property string variant: "dark"/' "$HOME/.config/quickshell/Theme.qml"
     pkill swaybg || true
-    swaybg -o '*' -i "$HOME/.config/wallpapers/crosses.png" -m fill >/dev/null 2>&1 &
+    swaybg -o '*' -i "$HOME/.config/wallpapers/dark_wallpaper_1.png" -m fill >/dev/null 2>&1 &
 fi
 
 hyprctl reload >/dev/null 2>&1 || true
