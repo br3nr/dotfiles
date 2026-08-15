@@ -9,6 +9,8 @@ import Quickshell.Services.Pipewire
 
 PanelWindow {
     id: bar
+    // Hyprland has no "primary monitor" flag. Pin the bar to the 4K output.
+    screen: Quickshell.screens.find(screen => screen.name === "DP-2")
     anchors {
         top: true
         left: true

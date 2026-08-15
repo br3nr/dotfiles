@@ -178,7 +178,7 @@ PopupWindow {
 
                         Rectangle {
                             anchors.fill: parent
-                            color: "#26000000"
+                            color: "#18000000"
                         }
 
                         Text {

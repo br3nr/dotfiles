@@ -43,6 +43,10 @@ Palette names describe where a colour is used rather than what it looks like:
 - `success`, `warning`, `error`, `info`: semantic feedback.
 - `decorative`, `decorativeMuted`: non-informational artwork such as the symbol strip.
 
+Each manifest also provides `identity.ascii`, a full-size monospace artwork file.
+Quickshell renders the complete character grid before uniformly scaling it for
+smaller previews, so the artwork keeps its original proportions.
+
 The theme manager validates every role before applying a bundle. Components
 should consume the role matching their purpose instead of choosing a visually
 similar token.

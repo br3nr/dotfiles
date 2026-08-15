@@ -170,6 +170,7 @@ apply_theme() {
         (.id | type == "string") and
         (.name | type == "string") and
         (.appearance == "light" or .appearance == "dark") and
+        (.identity.ascii | type == "string") and
         (.effects.terminalOpacity | type == "number") and
         (.effects.terminalOpacity >= 0 and .effects.terminalOpacity <= 1) and
         (.quickshell | type == "object") and
@@ -206,6 +207,8 @@ apply_theme() {
     nvim_component=$(jq -r '.components.neovim' "$manifest")
 
     [ -f "$wallpaper" ] || die "wallpaper not found: $wallpaper"
+    [ -f "$(expand_home "$(jq -r '.identity.ascii' "$manifest")")" ] ||
+        die "ASCII identity not found"
     [ -f "$bundle/$foot_component" ] || die "missing Foot component"
     [ -f "$bundle/$hypr_component" ] || die "missing Hyprland component"
     [ -f "$bundle/$nvim_component" ] || die "missing Neovim component"
@@ -274,6 +277,7 @@ list_themes_json() {
         name,
         appearance,
         wallpaper,
+        identity,
         quickshell
     }]' "${manifests[@]}"
 }

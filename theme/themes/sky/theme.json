@@ -1,0 +1,50 @@
+{
+  "id": "sky",
+  "name": "Sky",
+  "appearance": "light",
+  "wallpaper": "$HOME/.config/wallpapers/sky_wallpaper.png",
+  "identity": {
+    "ascii": "$HOME/.config/ascii/arachne-wire.txt"
+  },
+  "effects": {
+    "terminalOpacity": 0.68
+  },
+  "components": {
+    "foot": "foot.ini",
+    "hyprland": "hyprland.conf",
+    "neovim": "nvim.lua"
+  },
+  "quickshell": {
+    "surfaceBase": "#edf7fc",
+    "surfaceRaised": "#e4f1f8",
+    "surfaceOverlay": "#d8ebf5",
+    "textPrimary": "#263746",
+    "textSecondary": "#435a6a",
+    "textMuted": "#596f7e",
+    "textDisabled": "#94a8b5",
+    "accent": "#4e91c6",
+    "onAccent": "#f7fbfe",
+    "stateHover": "#d5e9f4",
+    "statePressed": "#c8e0ee",
+    "stateSelected": "#b9d8ea",
+    "borderSubtle": "#20263746",
+    "borderStrong": "#664d6f85",
+    "success": "#5f896d",
+    "warning": "#a9783d",
+    "error": "#b65e5e",
+    "info": "#4e86ae",
+    "decorative": "#5b91b3",
+    "decorativeMuted": "#96b8cc",
+    "fontFamily": "PP Fraktion Mono",
+    "fontSizeSmall": 10,
+    "fontSizeNormal": 12,
+    "spacingXs": 2,
+    "spacingSm": 4,
+    "spacingMd": 8,
+    "spacingLg": 12,
+    "itemRadius": 2,
+    "animationDuration": 200,
+    "barHeight": 32,
+    "symbolBarHeight": 24
+  }
+}

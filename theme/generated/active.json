@@ -3,6 +3,9 @@
   "name": "Nocturne",
   "appearance": "dark",
   "wallpaper": "$HOME/.config/wallpapers/dark_wallpaper_1.png",
+  "identity": {
+    "ascii": "$HOME/.config/ascii/arachne.txt"
+  },
   "effects": {
     "terminalOpacity": 0.5
   },

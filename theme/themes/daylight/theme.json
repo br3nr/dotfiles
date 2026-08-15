@@ -3,6 +3,9 @@
   "name": "Daylight",
   "appearance": "light",
   "wallpaper": "$HOME/.config/wallpapers/light_wallpaper.png",
+  "identity": {
+    "ascii": "$HOME/.config/ascii/arachne-wire.txt"
+  },
   "effects": {
     "terminalOpacity": 0.5
   },

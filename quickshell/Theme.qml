@@ -10,6 +10,9 @@ QtObject {
         id: "fallback",
         name: "Fallback",
         appearance: "dark",
+        identity: {
+            ascii: "$HOME/.config/ascii/arachne.txt"
+        },
         quickshell: {
             surfaceBase: "#0a0a0a",
             surfaceRaised: "#171717",
@@ -52,6 +55,9 @@ QtObject {
     readonly property string themeId: activeTheme.id
     readonly property string themeName: activeTheme.name
     readonly property string appearance: activeTheme.appearance
+    readonly property string asciiIdentity: activeTheme.identity
+                                            ? activeTheme.identity.ascii
+                                            : fallbackTheme.identity.ascii
 
     function loadTheme(): void {
         try {
