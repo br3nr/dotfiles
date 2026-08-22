@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 import Quickshell.Services.Mpris
 
@@ -58,6 +59,15 @@ PopupWindow {
                 arr.push(Pipewire.defaultAudioSink);
             return arr;
         }
+    }
+
+    // Changing PipeWire's default only affects new streams. This helper also
+    // moves every currently playing stream (Firefox, games, etc.) to it.
+    Process {
+        id: switchOutputProc
+        property int sinkId: 0
+        command: [Quickshell.env("HOME") + "/.config/quickshell/scripts/switch-audio-output.sh",
+                  sinkId.toString()]
     }
 
     property var activePlayer: {
@@ -359,6 +369,8 @@ PopupWindow {
                         hoverEnabled: true
                         onClicked: {
                             Pipewire.preferredDefaultAudioSink = modelData;
+                            switchOutputProc.sinkId = modelData.id;
+                            switchOutputProc.running = true;
                         }
                     }
                 }
